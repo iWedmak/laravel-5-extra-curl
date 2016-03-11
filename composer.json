@@ -12,8 +12,8 @@
     "require": {
         "php": ">=5.5.0",
         "laravel/framework": "5.*   ",
-        "markwilson/xml-to-json": "dev-master",
-        "curl/curl": "dev-master"
+        "markwilson/xml-to-json": "@dev",
+        "curl/curl": "@dev"
     },
     "autoload": {
         "psr-4": {
