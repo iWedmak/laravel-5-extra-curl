@@ -1,0 +1,23 @@
+{
+    "name": "iwedmak/extra-curl",
+    "description": "Extra Curl logic in laravel 5",
+    "keywords": ["laravel","illuminate","curl","useragent","xml"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "iWedmak Om",
+            "email": "iwedmak@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "laravel/framework": "5.*   ",
+        "markwilson/xml-to-json": "dev-master",
+        "curl/curl": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "iWedmak\\ExtraCurl\\": "src/"
+        }
+    }
+}
