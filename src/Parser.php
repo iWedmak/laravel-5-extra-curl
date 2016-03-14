@@ -11,10 +11,10 @@ class Parser {
     {
         $this->c=new \Curl\Curl();
         $this->c->setopt(CURLOPT_ENCODING, 'utf-8');
-        $this->c->setopt(CURLOPT_SSL_VERIFYPEER, false);
-        $this->c->setopt(CURLOPT_RETURNTRANSFER, true);
-        //$this->c->setCookie('language', 'en_EN');
-        //$this->c->setCookie('lw', 's');
+        //$this->c->setopt(CURLOPT_SSL_VERIFYPEER, false);
+        //$this->c->setopt(CURLOPT_RETURNTRANSFER, true);
+        $this->c->setCookie('language', 'en_EN');
+        $this->c->setCookie('lw', 's');
         //$this->c->setopt(CURLOPT_SSL_VERIFYPEER, false);
         //$this->c->setopt(CURLOPT_SSL_VERIFYHOST, false);
         //$this->c->setopt(CURLOPT_CAPATH, "sddsdf/cacert.pem");
@@ -53,7 +53,7 @@ class Parser {
                         )
                     );
                     $context = stream_context_create($opts);
-                    $responce = @file_get_contents($url, false, $context);
+                    $responce = file_get_contents($url, false, $context);
                     break;
             }
             
