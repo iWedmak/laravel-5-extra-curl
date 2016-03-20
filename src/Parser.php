@@ -7,8 +7,8 @@ class Parser {
 
     public $c;
     public $header;
-    public $proxy;
     public $opts;
+    public $proxy_attempts;
     
     public function __construct()
     {
@@ -21,13 +21,13 @@ class Parser {
         $this->header['User-Agent']='Mozilla/5.0 (iPad; U; CPU OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.10 (KHTML, like Gecko) Version/4.0.4 Mobile/7B334b Safari/531.21.102011-10-16 20:23:10';
         $this->header['Accept-language']='en';
         $this->header['Cookie']='language=en_EN; lw=s';
-        $this->proxy=false;
         $this->opts= array(
             'http'=>array(
                 'method'=>"GET",
                 'request_fulluri'=>true,
             )
         );
+        $this->proxy_attempts=0;
         /*
         "Accept-language: en\r\n" .
         "Cookie: language=en_EN; lw=s\r\n".
@@ -68,7 +68,6 @@ class Parser {
                         $this->header, 
                         array_keys($this->header)
                     ));
-                    //pre($header);
                     $this->opts['http']['header']=$header;
                     $context = stream_context_create($this->opts);
                     $responce = @file_get_contents($url, false, $context);
@@ -110,12 +109,35 @@ class Parser {
     
     public function setProxy()
     {
+        $time=30;
         $url='http://www.freeproxy-list.ru/api/proxy?anonymity=false&token=demo';
-        $resp=$this->get($url, 30, 'file');
+        $resp=$this->get($url, $time, 'file');
         $array=explode(PHP_EOL, $resp);
-        $proxy=$array[rand(0,count($array)-1)];
-        $this->opts['http']['proxy']=$this->proxy;
-        $this->c->setopt(CURLOPT_PROXY, $this->proxy);
+        $num=rand(0,count($array)-1);
+        $proxy=$array[$num];
+        //set proxy
+        $this->opts['http']['proxy']='tcp://'.$proxy;
+        $this->c->setopt(CURLOPT_PROXY, $proxy);
+        
+        //test proxy
+        $command="curl --proxy $proxy --connect-timeout 1 http://google.com/ > /dev/null 2>&1 && echo true || echo false";
+        if(!exec($command))
+        {
+            //if proxy test fails
+            //remove broken proxy
+            unset($array[$num]);
+            $resp=implode(PHP_EOL,$array);
+            //but back to cache
+            Cache::put($url, $resp, $time);
+            $this->proxy_attempts++;
+            if($this->proxy_attempts>5)
+            {
+                //if enoth attempts break this
+                return false;
+            }
+            //set new proxy and test it
+            $this->setProxy();
+        }
     }
     
     public function returnHeaders()
