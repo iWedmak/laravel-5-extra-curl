@@ -53,7 +53,8 @@ class Parser {
                         )
                     );
                     $context = stream_context_create($opts);
-                    $responce = file_get_contents($url, false, $context);
+                    pre($url);
+                    $responce = @file_get_contents($url, false, $context);
                     break;
             }
             
