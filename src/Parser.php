@@ -60,6 +60,10 @@ class Parser {
             {
                 case 'curl':
                     $this->c->get($url);
+                    if(isset($this->c->error_code) && !empty($this->c->error_code))
+                    {
+                        return false;
+                    }
                     $responce=$this->c->response;
                     break;
                 case 'file':
