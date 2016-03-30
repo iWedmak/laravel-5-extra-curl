@@ -2,6 +2,7 @@
 
 use Cache;
 use MarkWilson\XmlToJson\XmlToJsonConverter;
+use Yangqi\Htmldom\Htmldom as Htmldom;
 
 class Parser {
 
@@ -89,6 +90,14 @@ class Parser {
             Cache::forget($url);
         }
         return $responce;
+    }
+    
+    public function getHtml($url, $time=5, $type='curl')
+    {
+        $resp=$this->get($url, $time, $type);
+        $html=new Htmldom;
+        $html->str_get_html($resp);
+        return $html;
     }
     
     public function setAgent($type='mobile', $agent=false)
