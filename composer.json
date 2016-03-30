@@ -13,7 +13,8 @@
         "php": ">=5.5.0",
         "laravel/framework": "5.*   ",
         "markwilson/xml-to-json": "*",
-        "curl/curl": "*"
+        "curl/curl": "*",
+        "yangqi/htmldom": "*"
     },
     "autoload": {
         "psr-4": {
