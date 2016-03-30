@@ -16,6 +16,7 @@
         "curl/curl": "*",
         "yangqi/htmldom": "dev-master"
     },
+    "minimum-stability" : "dev",
     "autoload": {
         "psr-4": {
             "iWedmak\\ExtraCurl\\": "src/"
