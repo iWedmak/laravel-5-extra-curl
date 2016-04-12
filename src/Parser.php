@@ -10,6 +10,7 @@ class Parser {
     public $header;
     public $opts;
     public $proxy_attempts;
+    private $redirect_count;
     
     public function __construct()
     {
@@ -29,6 +30,7 @@ class Parser {
             )
         );
         $this->proxy_attempts=0;
+        $this->redirect_attempts=0;
         /*
         "Accept-language: en\r\n" .
         "Cookie: language=en_EN; lw=s\r\n".
@@ -160,5 +162,36 @@ class Parser {
         $this->c->setopt(CURLOPT_VERBOSE, true);
     }
     
+    public function redirect()
+    {
+        $this->redirect_attempts++;
+        $parse=parse_url(curl_getinfo($this->c->curl, CURLINFO_EFFECTIVE_URL));
+        if(isset($this->c->response_headers) && !empty($this->c->response_headers))
+        {
+            //pre($this->parser->c->response_headers);
+            foreach($this->c->response_headers as $head)
+            {
+                
+                if(mb_stripos($head, 'Location')!==false)
+                {
+                    $data=explode('Location:',$head);
+                    if(isset($data[1]) && !empty($data[1]))
+                    {
+                        if(mb_stripos($head, 'http:')!==false)
+                        {
+                            $url=trim($data[1]);
+                        }
+                        else
+                        {
+                            $url=$parse['host'].trim($data[1]);
+                        }
+                        return $url;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }
 ?>
