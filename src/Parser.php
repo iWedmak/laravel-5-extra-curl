@@ -177,7 +177,7 @@ class Parser {
                     $data=explode('Location:',$head);
                     if(isset($data[1]) && !empty($data[1]))
                     {
-                        if(mb_stripos($head, 'http:')!==false)
+                        if(mb_stripos($head, 'http')!==false)
                         {
                             $url=trim($data[1]);
                         }
