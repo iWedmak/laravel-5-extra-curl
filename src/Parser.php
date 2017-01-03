@@ -15,6 +15,8 @@ class Parser {
     public function __construct()
     {
         $this->c=new \Curl\Curl();
+        $this->c->setopt(CURLOPT_COOKIEFILE, 'cookie_jar.txt');
+        $this->c->setopt(CURLOPT_COOKIEJAR, 'cookie_jar.txt');
         $this->c->setopt(CURLOPT_ENCODING, 'utf-8');
         //$this->c->setopt(CURLOPT_SSL_VERIFYPEER, false);
         //$this->c->setopt(CURLOPT_RETURNTRANSFER, true);
